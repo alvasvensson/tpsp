@@ -12,6 +12,8 @@ public class characterController : MonoBehaviour
 
     [SerializeField]
     AnimationClip attack;
+
+
     int hp = 100;
     void Start()
     {
