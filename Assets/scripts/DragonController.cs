@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class DragonController : MonoBehaviour
 {
+    Animator animator;
     int hp = 100;
-    // Start is called before the first frame update
+    float timeBetweenFire;
+    [SerializeField]
+    Transform fireballSpawnPos;
+    [SerializeField]
+    GameObject fireballPrefab;
+
     void Start()
     {
 
@@ -14,10 +20,17 @@ public class DragonController : MonoBehaviour
     {
         GetComponent<DragonHealth>().SetInitHealth(hp);
     }
-    // Update is called once per frame
+
     void Update()
     {
         GetComponent<DragonHealth>().UpdateHealth(hp);
+        timeBetweenFire += Time.deltaTime;
+        if (timeBetweenFire > 4)
+        {
+            animator.Play("drakeSkjuta");
+            Instantiate(fireballPrefab, fireballSpawnPos.position, Quaternion.identity);
+            timeBetweenFire = 0;
+        }
     }
 
     public void Hurt(int dmg)
@@ -27,6 +40,6 @@ public class DragonController : MonoBehaviour
 
     public void Attack()
     {
-        
+
     }
 }
