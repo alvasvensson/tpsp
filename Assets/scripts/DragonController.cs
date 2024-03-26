@@ -14,11 +14,11 @@ public class DragonController : MonoBehaviour
 
     void Start()
     {
+        GetComponent<DragonHealth>().SetInitHealth(hp);
 
     }
     public void SetHP()
     {
-        GetComponent<DragonHealth>().SetInitHealth(hp);
     }
 
     void Update()
@@ -27,7 +27,7 @@ public class DragonController : MonoBehaviour
         timeBetweenFire += Time.deltaTime;
         if (timeBetweenFire > 4)
         {
-            animator.Play("drakeSkjuta");
+            // animator.Play("drakeSkjuta");
             Instantiate(fireballPrefab, fireballSpawnPos.position, Quaternion.identity);
             timeBetweenFire = 0;
         }

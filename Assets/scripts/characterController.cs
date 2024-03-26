@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,7 @@ public class characterController : MonoBehaviour
     Animator animator;
     string lastDirection = "right";
     bool isAttacking = false;
+    HashSet<GameObject> currentEnemiesInRange = new();
 
     [SerializeField]
     AnimationClip attack;
@@ -55,6 +57,27 @@ public class characterController : MonoBehaviour
                 if (lastDirection == "left") { animator.Play("idleleft"); }
             }
         }
+
+
+        if (isAttacking)
+        {
+            if (currentEnemiesInRange.Count >= 1)
+            {
+
+                foreach (GameObject e in currentEnemiesInRange)
+                {
+                    if (e.tag == "Dragon")
+                    {
+                        DragonController d = e.GetComponent<DragonController>();
+                        if (d)
+                        {
+                            d.Hurt(10);
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     public void Hurt(int dmg)
@@ -75,4 +98,20 @@ public class characterController : MonoBehaviour
         Invoke("StopAttacking", attack.length);
     }
     void StopAttacking() => isAttacking = false;
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Dragon")
+        {
+            print("Added " + other.name);
+            currentEnemiesInRange.Add(other.gameObject);
+            print(currentEnemiesInRange.Count);
+        }
+        // print("enter");
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        currentEnemiesInRange.Remove(other.gameObject);
+    }
 }

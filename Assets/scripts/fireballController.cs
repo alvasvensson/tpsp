@@ -8,16 +8,23 @@ public class fireballController : MonoBehaviour
     float speed = 8;
     Transform playerPos;
     Transform fireballSpawnPos;
+    Vector2 target;
+
+    Vector2 velocity;
 
     void Start()
     {
         playerPos = GameObject.Find("character").transform;
+        target = playerPos.position;
         fireballSpawnPos = GameObject.Find("fireballSpawnPos").transform;
+
+        velocity = (target - (Vector2)transform.position).normalized;
+
     }
 
     void Update()
     {
-        transform.position = Vector2.MoveTowards(transform.position, playerPos.position, speed * Time.deltaTime);
+        transform.Translate(velocity * speed * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
