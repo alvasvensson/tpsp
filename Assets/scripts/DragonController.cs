@@ -10,6 +10,8 @@ public class DragonController : MonoBehaviour
     [SerializeField]
     Transform fireballSpawnPos;
     [SerializeField]
+    Transform playerPos;
+    [SerializeField]
     GameObject fireballPrefab;
 
     void Start()
@@ -25,7 +27,7 @@ public class DragonController : MonoBehaviour
     {
         GetComponent<DragonHealth>().UpdateHealth(hp);
         timeBetweenFire += Time.deltaTime;
-        if (timeBetweenFire > 4)
+        if (timeBetweenFire > 4 && playerPos.position.x < 0)
         {
             // animator.Play("drakeSkjuta");
             Instantiate(fireballPrefab, fireballSpawnPos.position, Quaternion.identity);
@@ -36,6 +38,7 @@ public class DragonController : MonoBehaviour
     public void Hurt(int dmg)
     {
         hp -= dmg;
+        print("aj");
     }
 
     public void Attack()

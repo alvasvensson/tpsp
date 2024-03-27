@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Fireball
   - Sword
+  - Dragon
   layers:
   - Default
   - TransparentFX

@@ -33,6 +33,12 @@ public class characterController : MonoBehaviour
         if (!isAttacking)
         {
             transform.Translate(movement * 5 * Time.deltaTime);
+
+            Vector3 pos = transform.position;
+            pos.y = Mathf.Min(2, pos.y);
+            transform.position = pos;
+
+
             if (movement.x > 0)
             {
                 animator.Play("walkingright");
@@ -59,25 +65,6 @@ public class characterController : MonoBehaviour
         }
 
 
-        if (isAttacking)
-        {
-            if (currentEnemiesInRange.Count >= 1)
-            {
-
-                foreach (GameObject e in currentEnemiesInRange)
-                {
-                    if (e.tag == "Dragon")
-                    {
-                        DragonController d = e.GetComponent<DragonController>();
-                        if (d)
-                        {
-                            d.Hurt(10);
-                        }
-                    }
-                }
-            }
-        }
-
     }
 
     public void Hurt(int dmg)
@@ -96,6 +83,8 @@ public class characterController : MonoBehaviour
         animator.Play("attack");
 
         Invoke("StopAttacking", attack.length);
+        Invoke("HurtInRange", attack.length / 2);
+
     }
     void StopAttacking() => isAttacking = false;
 
@@ -107,11 +96,31 @@ public class characterController : MonoBehaviour
             currentEnemiesInRange.Add(other.gameObject);
             print(currentEnemiesInRange.Count);
         }
-        // print("enter");
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         currentEnemiesInRange.Remove(other.gameObject);
+    }
+
+    private void HurtInRange()
+    {
+        if (isAttacking)
+        {
+            if (currentEnemiesInRange.Count >= 1)
+            {
+                foreach (GameObject e in currentEnemiesInRange)
+                {
+                    if (e.tag == "Dragon")
+                    {
+                        DragonController d = e.GetComponent<DragonController>();
+                        if (d)
+                        {
+                            d.Hurt(10);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
