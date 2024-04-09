@@ -7,6 +7,8 @@ public class DragonController : MonoBehaviour
     Animator animator;
     int hp = 100;
     float timeBetweenFire;
+    float animTime = 0;
+    bool dragonDead = false;
     [SerializeField]
     Transform fireballSpawnPos;
     [SerializeField]
@@ -17,7 +19,7 @@ public class DragonController : MonoBehaviour
     void Start()
     {
         GetComponent<DragonHealth>().SetInitHealth(hp);
-
+        animator = GetComponent<Animator>();
     }
     public void SetHP()
     {
@@ -27,18 +29,28 @@ public class DragonController : MonoBehaviour
     {
         GetComponent<DragonHealth>().UpdateHealth(hp);
         timeBetweenFire += Time.deltaTime;
-        if (timeBetweenFire > 4 && playerPos.position.x < 0)
+        animTime += Time.deltaTime;
+        if (timeBetweenFire > 4 && playerPos.position.x < 0 && !dragonDead)
         {
-            // animator.Play("drakeSkjuta");
+            animator.Play("drakeSkjuta");
+            animTime = 0;
             Instantiate(fireballPrefab, fireballSpawnPos.position, Quaternion.identity);
             timeBetweenFire = 0;
+        }
+        if (animTime > 0.5 && !dragonDead)
+        {
+            animator.Play("drakeIdle");
+        }
+        if (hp <= 0)
+        {
+            animator.Play("drakeDead");
+            dragonDead = true;
         }
     }
 
     public void Hurt(int dmg)
     {
         hp -= dmg;
-        print("aj");
     }
 
     public void Attack()

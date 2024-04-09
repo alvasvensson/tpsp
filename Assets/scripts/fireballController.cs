@@ -12,6 +12,7 @@ public class fireballController : MonoBehaviour
 
     Vector2 velocity;
 
+
     void Start()
     {
         playerPos = GameObject.Find("character").transform;
