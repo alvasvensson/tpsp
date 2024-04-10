@@ -92,9 +92,7 @@ public class characterController : MonoBehaviour
     {
         if (other.tag == "Dragon")
         {
-            print("Added " + other.name);
             currentEnemiesInRange.Add(other.gameObject);
-            print(currentEnemiesInRange.Count);
         }
     }
 
